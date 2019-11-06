@@ -1,0 +1,13 @@
+.heart {
+    font-size: 30px;
+    color:red;
+}
+
+.search{
+  font-size: 30px;
+}
+
+.bordered {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
