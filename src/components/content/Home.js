@@ -16,22 +16,24 @@ class Home extends React.Component {
     componentDidMount() {
         const { selectedCity, citiesDetails, fetchSelectedCity, fetchCityDetails } = this.props;
 
-        if(!selectedCity) {
-            if (!navigator.geolocation) {
-                fetchSelectedCity(INIT_CITY);
-            }
-            else {
-                navigator.geolocation.getCurrentPosition((success, error) => {
+        // if(!selectedCity) {
+        //     if (!navigator.geolocation) {
+        //         fetchSelectedCity(INIT_CITY);
+        //     }
+        //     else {
+        //         navigator.geolocation.getCurrentPosition((success, error) => {
                     
-                    if(!error) {
-                        const { longitude, latitude } = success.coords;
+        //             if(!error) {
+        //                 const { longitude, latitude } = success.coords;
 
-                        this.getLocation(`${latitude},${longitude}`);
-                    }
-                });
-            }
-        }
-        else if(!citiesDetails || (selectedCity.cityName !== citiesDetails.cityName)) {
+        //                 this.getLocation(`${latitude},${longitude}`);
+        //             }
+        //         });
+        //     }
+        // }
+        // else 
+        console.log(this.props);
+        if(!citiesDetails || (selectedCity.cityName !== citiesDetails.cityName)) {
             console.log(selectedCity);
             this.props.fetchCityDetails(selectedCity);
         }
