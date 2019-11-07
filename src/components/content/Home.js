@@ -18,13 +18,10 @@ class Home extends React.Component {
 
         if(!selectedCity) {
             if (!navigator.geolocation) {
-                console.log(INIT_CITY);
                 fetchSelectedCity(INIT_CITY);
             }
             else {
-                console.log('before');
                 navigator.geolocation.getCurrentPosition((success, error) => {
-                    console.log(success, error);
                     if(!error) {
                         const { longitude, latitude } = success.coords;
 

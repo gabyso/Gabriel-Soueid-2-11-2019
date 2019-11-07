@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY = '5FvrrmtHopUvBt0UPGalwkCdHTPckDfz';
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
 const ICON_LINK = 'https://developer.accuweather.com/sites/default/files/<id>-s.png';
 const DAYS_OF_WEEKS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
