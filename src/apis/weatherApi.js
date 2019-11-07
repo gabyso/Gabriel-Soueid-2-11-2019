@@ -6,7 +6,7 @@ const ICON_LINK = 'https://developer.accuweather.com/sites/default/files/<id>-s.
 const DAYS_OF_WEEKS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const api = axios.create({
-    baseURL: 'http://dataservice.accuweather.com',
+    baseURL: 'https://dataservice.accuweather.com',
 
 });
 
