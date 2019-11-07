@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_KEY = '5FvrrmtHopUvBt0UPGalwkCdHTPckDfz';// process.env.API_key;
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;//'5FvrrmtHopUvBt0UPGalwkCdHTPckDfz'; //'fny754FtSRj2n8g8sZATLcGzwFiPXAvh' // process.env.API_key;
+
 const ICON_LINK = 'https://developer.accuweather.com/sites/default/files/<id>-s.png';
 const DAYS_OF_WEEKS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -18,24 +19,24 @@ function getIconLink(id) {
     return null;
 }
 
-export const GetCityFromLocation = async (lon, lat) => {
+export const GetCityFromLocation = async (query) => {
     const response = await api.get('/locations/v1/cities/geoposition/search',{
         params: {
             apikey: API_KEY,
-            q: (lat,lon)
+            q: query
+        }
+    })
+    .then(res => {
+        return {
+            cityName: res.data.LocalizedName,
+            cityId: res.data.Key
         }
     })
     .catch(error => {
         return { error };
     });
-    if(!response.error) {
-        const { data } = response;
-        return {
-            cityName: data.LocalizedName,
-            cityId: data.Key
-        }
-    }
     
+    return response;
 };
 
 export const GetCitiesOptions = async query => {

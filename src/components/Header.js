@@ -1,10 +1,11 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import history from '../history';
 
-const Header = () => {
+const Header = props => {
     return (
-        <Navbar bg="primary" variant="dark" expand="lg">
+        <Navbar bg={props.darkMode ? 'dark' : 'info'} variant="dark" expand="lg">
             <Navbar.Brand className="mr-auto">Herolo Weather Task</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -22,4 +23,9 @@ const Header = () => {
         </Navbar>
     )
 };
-export default Header;
+
+const mapStateToProps = state => {
+    return { darkMode: state.darkMode };
+}
+
+export default connect(mapStateToProps)(Header);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Container, Col, Row } from 'react-bootstrap';
-
+import history from '../../history';
 import { GetCurrentWeather } from '../../apis/weatherApi';
 import { fetchSelectedCity } from '../../actions';
 import { GetFavorites } from '../../weatherLocalStorage';
@@ -20,14 +20,19 @@ class Favorites extends React.Component {
 
         for(var i = 0; i < cities.length; i++) {
             const cityName = cities[i];
-            const citiesId = favorsStorage[cityName];
+            const cityId = favorsStorage[cityName];
 
-            const citieWeather = await GetCurrentWeather(citiesId);
+            const citieWeather = await GetCurrentWeather(cityId);
 
-            favorites.push({ cityName, ...citieWeather });
+            favorites.push({ cityName, ...citieWeather, cityId });
         }
 
         this.setState({ favorites });
+    }
+
+    renderHome = city => {
+        this.props.fetchSelectedCity(city)
+        history.push('/');
     }
 
     renderFavorites = () => {
@@ -36,7 +41,14 @@ class Favorites extends React.Component {
         if(favorites.length) {
             return favorites.map(city => {
                 return (
-                    <Col key={city.cityName} lg={3} md={12} className="bordered p-5 m-1">
+                    <Col 
+                        onClick={() => this.renderHome(city)} 
+                        key={city.cityName} 
+                        lg={3} 
+                        md={12}
+                        style={{ cursor: 'pointer' }}
+                        className={`content${this.props.darkMode ? '-dark' : ''} bordered p-5 m-1`}
+                    >
                         <Row className="justify-content-center">
                             <Col md={"auto"}><h3>{city.cityName}</h3></Col>
                         </Row>
@@ -58,13 +70,18 @@ class Favorites extends React.Component {
 
     render() {
         return (
-            <Container>
-                <Row className="mt-5 justify-content-lg-center">
-                    {this.renderFavorites()}
-                </Row>
-            </Container>
+            <div className={`page${this.props.darkMode ? '-dark' : ''} pt-1`}>
+                <Container>
+                    <Row className="mt-5 justify-content-lg-center">
+                        {this.renderFavorites()}
+                    </Row>
+                </Container>
+            </div> 
         );
     }
 };
 
-export default connect(null, { fetchSelectedCity })(Favorites);
+const mapStateToProps = ({ darkMode }) => {
+    return { darkMode };
+}
+export default connect(mapStateToProps, { fetchSelectedCity })(Favorites);

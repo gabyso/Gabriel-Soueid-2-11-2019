@@ -1,13 +1,55 @@
+.page {
+  background-color: #fff;
+}
+
+.page-dark {
+  background-color: #5f6769;
+  height: 100%;
+  width: 100%;
+  padding-bottom: 57px;
+}
+
+.bordered {
+  border-radius: 6px;
+}
+
+.content {
+  background-color: #96d1c7;
+  color: #fff;
+}
+
+.content-dark {
+  background-color: #979797;
+  color: black;
+}
+
 .heart {
     font-size: 30px;
-    color:red;
+    color:#fb5b5a;
 }
 
 .search{
   font-size: 30px;
 }
 
-.bordered {
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.search-light {
+  color: #00918e;
+}
+
+.search-dark {
+  color: white;
+}
+
+.card {
+  color: #00918e;
+  background-color: #fff;
+}
+
+.card-dark {
+  color: white;
+  background-color: #5d5d5d;
+}
+
+#favorite-btn{
+  width: 200px;
 }

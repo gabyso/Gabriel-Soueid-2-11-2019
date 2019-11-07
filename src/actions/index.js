@@ -21,3 +21,7 @@ export const fetchToggleFavorites = city => {
 
     return { type: 'FETCH_FAVORITE_CITY', payload: !city.isFavorite };
 }
+
+export const fetchDarkMode = mode => {
+    return { type: 'FETCH_DARK_MODE', payload: mode };
+}
