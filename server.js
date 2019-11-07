@@ -14,5 +14,3 @@ app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 app.listen(port);
-
-console.log(process.env.REACT_APP_WEATHER_API_KEY);
