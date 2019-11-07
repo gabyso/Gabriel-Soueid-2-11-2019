@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import citiesDetailsReducer from './citiesDetailsReducer';
-import selectedCityReducer from './selectedCityReducer';
-import darkModeReducer from './darkModeReducer';
+import citiesDetails from './citiesDetailsReducer';
+import selectedCity from './selectedCityReducer';
+import darkMode from './darkModeReducer';
+import typeTemperature from './typeTemperatureReducer';
 
 export default combineReducers({
-    citiesDetails: citiesDetailsReducer,
-    selectedCity: selectedCityReducer,
-    darkMode: darkModeReducer
+    citiesDetails,
+    selectedCity,
+    darkMode,
+    typeTemperature
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Button, Form, Spinner } from 'react-bootstrap';
 import { asyncContainer, Typeahead } from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
-import { fetchCityDetails, fetchSelectedCity, fetchToggleFavorites, fetchDarkMode } from '../../actions';
+import { fetchCityDetails, fetchSelectedCity, fetchToggleFavorites, fetchDarkMode, fetchTemperature } from '../../actions';
 import { GetCitiesOptions, GetCityFromLocation } from '../../apis/weatherApi';
 import ErrorModal from '../ErrorModal';
 import '../styles.css';
@@ -32,7 +32,7 @@ class Home extends React.Component {
         }
         else 
         if(!citiesDetails || (selectedCity.cityName !== citiesDetails.cityName)) {
-            this.props.fetchCityDetails(selectedCity);
+            fetchCityDetails(selectedCity);
         }
     }
 
@@ -69,9 +69,9 @@ class Home extends React.Component {
     };
 
     render(){
-        const { citiesDetails, darkMode, fetchDarkMode } = this.props;
+        const { citiesDetails, darkMode, fetchDarkMode, typeTemperature, fetchTemperature } = this.props;
         const { isLoading, options } = this.state;
-
+        
         if(citiesDetails) {
             if(citiesDetails.error) {
                 return (
@@ -92,6 +92,15 @@ class Home extends React.Component {
                                     label="Night mode"
                                     checked={darkMode}
                                     onChange={() => fetchDarkMode(!darkMode)}
+                                />
+                            </Col>
+                            <Col lg={2}>
+                                <Form.Check 
+                                    type="switch"
+                                    id="temperature-type"
+                                    label={`${typeTemperature ? 'fahrenheit' : 'celsius'}`}
+                                    checked={typeTemperature}
+                                    onChange={() => fetchTemperature(!typeTemperature)}
                                 />
                             </Col>
                         </Row>
@@ -117,7 +126,7 @@ class Home extends React.Component {
                             <Col className="d-none d-sm-block" lg={2}><img width={100} height={70} src={citiesDetails.icon} alt="weather-icon"></img></Col>
                             <Col md={{span: 6}} sm={12} className="pt-4">
                                 <h4>{citiesDetails.cityName}</h4>
-                                <h4>{citiesDetails.temperature.Metric.Value}<span>&#176;</span>c</h4>
+                                <h4>{typeTemperature ? citiesDetails.temperature.Imperial.Value : citiesDetails.temperature.Metric.Value}<span>&#176;</span>{typeTemperature ? 'F' : 'C'}</h4>
                             </Col>
                             <Col lg={3} sm={12}><Button id="favorite-btn"  variant={`${darkMode ? 'dark' : 'info'}`} onClick={() => this.props.fetchToggleFavorites(citiesDetails)}>{`${citiesDetails.isFavorite ? 'Remove from' : 'Add to'} Favorites`}</Button></Col>
                             <Col md='auto'>
@@ -133,7 +142,11 @@ class Home extends React.Component {
                                     return (
                                         <Col key={dayOfWeek} md="auto" className={`bordered p-5 mr-5 card${darkMode ? '-dark' : ''}`}>
                                             <h5>{dayOfWeek}</h5>
-                                            <h5>{temperature}<span>&#176;</span>c</h5>
+                                            <h5>
+                                                {typeTemperature ? temperature.fahrenheit : temperature.celsius}
+                                                &#176;
+                                                {typeTemperature? 'F' : 'C'}
+                                            </h5>
                                         </Col>
                                     );
                                 })
@@ -157,12 +170,13 @@ class Home extends React.Component {
     }
 }
 
-const mapStateToProps = ({ citiesDetails, selectedCity, darkMode }) => {
+const mapStateToProps = ({ citiesDetails, selectedCity, darkMode, typeTemperature }) => {
     return {
         citiesDetails, 
         selectedCity,
-        darkMode
+        darkMode,
+        typeTemperature
     }
 };
 
-export default connect(mapStateToProps, { fetchCityDetails, fetchSelectedCity, fetchToggleFavorites, fetchDarkMode })(Home);
+export default connect(mapStateToProps, { fetchCityDetails, fetchSelectedCity, fetchToggleFavorites, fetchDarkMode, fetchTemperature })(Home);

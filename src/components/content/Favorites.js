@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row, Form } from 'react-bootstrap';
 import history from '../../history';
 import { GetCurrentWeather } from '../../apis/weatherApi';
-import { fetchSelectedCity } from '../../actions';
+import { fetchSelectedCity, fetchDarkMode, fetchTemperature } from '../../actions';
 import { GetFavorites } from '../../weatherLocalStorage';
 
 class Favorites extends React.Component {
@@ -37,7 +37,7 @@ class Favorites extends React.Component {
 
     renderFavorites = () => {
         const { favorites } = this.state;
-
+        const { typeTemperature } = this.props;
         if(favorites.length) {
             return favorites.map(city => {
                 return (
@@ -53,7 +53,9 @@ class Favorites extends React.Component {
                             <Col md={"auto"}><h3>{city.cityName}</h3></Col>
                         </Row>
                         <Row className="justify-content-center">
-                            <Col md={"auto"}><h5>{!city.error ? city.temperature.Metric.Value : '--'}<span>&#176;</span>c</h5></Col>
+                            <Col md={"auto"}>
+                                <h5>{typeTemperature ? city.temperature.Imperial.Value : city.temperature.Metric.Value}<span>&#176;</span>{typeTemperature ? 'F' : 'C'}</h5>
+                                </Col>
                         </Row>
                         <Row className="justify-content-center mt-4">
                             <Col md={"auto"}><h4>{!city.error ? city.description : 'Failed getting weather'}</h4></Col>
@@ -72,6 +74,26 @@ class Favorites extends React.Component {
         return (
             <div className={`page${this.props.darkMode ? '-dark' : ''} pt-1`}>
                 <Container>
+                <Row className="pt-3">
+                            <Col lg={2}>
+                                <Form.Check 
+                                    type="switch"
+                                    id="night-mode"
+                                    label="Night mode"
+                                    checked={this.props.darkMode}
+                                    onChange={() => this.props.fetchDarkMode(!this.props.darkMode)}
+                                />
+                            </Col>
+                            <Col lg={2}>
+                                <Form.Check 
+                                    type="switch"
+                                    id="temperature-type"
+                                    label={`${this.props.typeTemperature ? 'fahrenheit' : 'celsius'}`}
+                                    checked={this.props.typeTemperature}
+                                    onChange={() => this.props.fetchTemperature(!this.props.typeTemperature)}
+                                />
+                            </Col>
+                        </Row>
                     <Row className="mt-5 justify-content-lg-center">
                         {this.renderFavorites()}
                     </Row>
@@ -81,7 +103,7 @@ class Favorites extends React.Component {
     }
 };
 
-const mapStateToProps = ({ darkMode }) => {
-    return { darkMode };
+const mapStateToProps = ({ darkMode, typeTemperature }) => {
+    return { darkMode, typeTemperature };
 }
-export default connect(mapStateToProps, { fetchSelectedCity })(Favorites);
+export default connect(mapStateToProps, { fetchSelectedCity, fetchDarkMode, fetchTemperature })(Favorites);

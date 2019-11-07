@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
-
 const ICON_LINK = 'https://developer.accuweather.com/sites/default/files/<id>-s.png';
 const DAYS_OF_WEEKS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -109,7 +108,7 @@ const GetFiveDaysWeather = async key => {
     return fiveDaysDetails;
 }
 
-export const GetWeatherDetails = async ({cityName, cityId}) => {
+export const GetWeatherDetails = async ( { cityId }) => {
     const current = await GetCurrentWeather(cityId);
     const forecast = await GetFiveDaysWeather(cityId);
 
@@ -128,7 +127,7 @@ const getDay = date => {
 
 const getAverageTemperature = (fahrenheit_1, fahrenheit_2) => {
     const avarege = (fahrenheit_1 + fahrenheit_2) / 2;
-    const celsius = (avarege - 32) * (5 / 9);
+    const celsius = Math.round((avarege - 32) * (5 / 9));
 
-    return Math.round(celsius);
+    return { celsius, fahrenheit: avarege };
 };

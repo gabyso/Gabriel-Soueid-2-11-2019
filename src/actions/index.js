@@ -25,3 +25,7 @@ export const fetchToggleFavorites = city => {
 export const fetchDarkMode = mode => {
     return { type: 'FETCH_DARK_MODE', payload: mode };
 }
+
+export const fetchTemperature = type => {
+    return { type: 'FETCH_TEMPERATURE_TYPE', payload: type };
+}
