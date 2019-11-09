@@ -14,24 +14,12 @@ class Home extends React.Component {
     state = { isLoading: false, options: null };
 
     componentDidMount() {
-        const { selectedCity, citiesDetails, fetchSelectedCity, fetchCityDetails } = this.props;
+        const { selectedCity, citiesDetails, fetchCityDetails } = this.props;
 
         if(!selectedCity) {
-            if (!navigator.geolocation) {
-                fetchSelectedCity(INIT_CITY);
-            }
-            else {
-                navigator.geolocation.getCurrentPosition((success, error) => {
-                    if(!error) {
-                        const { longitude, latitude } = success.coords;
-
-                        this.getLocation(`${latitude},${longitude}`);
-                    }
-                });
-            }
+           this.GetInitCity();
         }
-        else 
-        if(!citiesDetails || (selectedCity.cityName !== citiesDetails.cityName)) {
+        else if(!citiesDetails || (selectedCity.cityName !== citiesDetails.cityName)) {
             fetchCityDetails(selectedCity);
         }
     }
@@ -42,7 +30,23 @@ class Home extends React.Component {
         if(!citiesDetails || (selectedCity.cityName !== citiesDetails.cityName)) {
             this.props.fetchCityDetails(selectedCity);
         }
-        else if(!citiesDetails) this.props.fetchSelectedCity(INIT_CITY);
+        else if(!selectedCity) this.GetInitCity();;
+    }
+
+    GetInitCity = () => {
+        if (!navigator.geolocation) {
+            this.props.fetchSelectedCity(INIT_CITY);
+        }
+        else {
+            navigator.geolocation.getCurrentPosition((success, error) => {
+                if(!error) {
+                    const { longitude, latitude } = success.coords;
+    
+                    this.getLocation(`${latitude},${longitude}`);
+                }
+                else this.props.fetchSelectedCity(INIT_CITY);
+            });
+        }
     }
 
     getLocation = async query => {
@@ -51,6 +55,7 @@ class Home extends React.Component {
         if(!localCity.error) {
             this.props.fetchSelectedCity(localCity);
         }
+        else this.props.fetchSelectedCity(INIT_CITY);
     };
 
     onSearch = async query => {
